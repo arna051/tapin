@@ -1,6 +1,6 @@
 # Release checklist
 
-- [ ] Confirm `tapin` is available on npm immediately before publication.
+- [ ] Confirm `@hippogriffdev/tapin` is available on npm immediately before publication.
 - [ ] Confirm commercial API authorization and package's unofficial description.
 - [ ] Generate the official location snapshot with `TAPIN_TOKEN` and an explicit `TAPIN_LOCATIONS_FETCHED_AT`.
 - [ ] Review added, removed, and renamed location codes.

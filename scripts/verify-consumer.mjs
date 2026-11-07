@@ -8,19 +8,20 @@ const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const directory = await mkdtemp(join(tmpdir(), 'tapin-consumer-'));
 try {
   await mkdir(join(directory, 'node_modules'), { recursive: true });
-  await symlink(root, join(directory, 'node_modules', 'tapin'), 'dir');
+  await mkdir(join(directory, 'node_modules', '@hippogriffdev'), { recursive: true });
+  await symlink(root, join(directory, 'node_modules', '@hippogriffdev', 'tapin'), 'dir');
   const subpaths = ['', '/browser', '/node', '/mongoose', '/nestjs', '/testing'];
   await writeFile(
     join(directory, 'esm.mjs'),
-    `${subpaths.map((path, index) => `import * as m${index} from 'tapin${path}';`).join('\n')}\nif (![${subpaths.map((_, index) => `m${index}`).join(',')}].every(Boolean)) process.exit(1);\n`,
+    `${subpaths.map((path, index) => `import * as m${index} from '@hippogriffdev/tapin${path}';`).join('\n')}\nif (![${subpaths.map((_, index) => `m${index}`).join(',')}].every(Boolean)) process.exit(1);\n`,
   );
   await writeFile(
     join(directory, 'cjs.cjs'),
-    `${subpaths.map((path, index) => `const m${index} = require('tapin${path}');`).join('\n')}\nif (![${subpaths.map((_, index) => `m${index}`).join(',')}].every(Boolean)) process.exit(1);\n`,
+    `${subpaths.map((path, index) => `const m${index} = require('@hippogriffdev/tapin${path}');`).join('\n')}\nif (![${subpaths.map((_, index) => `m${index}`).join(',')}].every(Boolean)) process.exit(1);\n`,
   );
   await writeFile(
     join(directory, 'types.ts'),
-    `import type { QuoteInput } from 'tapin'; import { listProvinces } from 'tapin/browser'; import { createTapinClient } from 'tapin/node'; import { createTapinModels } from 'tapin/mongoose'; import { TapinModule } from 'tapin/nestjs'; import { successEnvelope } from 'tapin/testing'; void ([listProvinces, createTapinClient, createTapinModels, TapinModule, successEnvelope] satisfies unknown[]); const input = {} as QuoteInput; void input;\n`,
+    `import type { QuoteInput } from '@hippogriffdev/tapin'; import { listProvinces } from '@hippogriffdev/tapin/browser'; import { createTapinClient } from '@hippogriffdev/tapin/node'; import { createTapinModels } from '@hippogriffdev/tapin/mongoose'; import { TapinModule } from '@hippogriffdev/tapin/nestjs'; import { successEnvelope } from '@hippogriffdev/tapin/testing'; void ([listProvinces, createTapinClient, createTapinModels, TapinModule, successEnvelope] satisfies unknown[]); const input = {} as QuoteInput; void input;\n`,
   );
   await writeFile(
     join(directory, 'tsconfig.json'),

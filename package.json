@@ -1,5 +1,5 @@
 {
-  "name": "tapin",
+  "name": "@hippogriffdev/tapin",
   "version": "0.1.0",
   "description": "Unofficial Tapin shipping API client and integration toolkit for TypeScript, Mongoose, and NestJS",
   "keywords": [

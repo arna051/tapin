@@ -1,4 +1,4 @@
-import { createTapinClient, createTapinShippingService } from 'tapin/node';
+import { createTapinClient, createTapinShippingService } from '@hippogriffdev/tapin/node';
 
 const token = process.env.TAPIN_TOKEN;
 if (!token) throw new Error('TAPIN_TOKEN is required');

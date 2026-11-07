@@ -5,7 +5,7 @@
 1. Coordinate commercial API access with Tapin as required by its documentation.
 2. Issue a least-privilege token and use Tapin's server-IP restriction when compatible with the deployment architecture.
 3. Store tokens only as authenticated ciphertext or in a host vault. `createAesGcmCredentialVault` requires host-managed 32-byte keys and supports key IDs and rotation.
-4. Import authenticated functionality only from `tapin/node`, `tapin/mongoose`, or `tapin/nestjs`. Never serialize a client or token into frontend state.
+4. Import authenticated functionality only from `@hippogriffdev/tapin/node`, `@hippogriffdev/tapin/mongoose`, or `@hippogriffdev/tapin/nestjs`. Never serialize a client or token into frontend state.
 5. Configure request timeouts, document size limits, bounded read retries, audit retention, and tenant/account isolation.
 
 ## Safe rollout order

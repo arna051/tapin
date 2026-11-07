@@ -1,4 +1,4 @@
-# tapin
+# @hippogriffdev/tapin
 
 Unofficial TypeScript integration for the [Tapin shipping API](https://docs.tapin.ir/), with intentional exports for core contracts, browser-safe location helpers, Node.js, Mongoose, NestJS, and testing.
 
@@ -7,11 +7,11 @@ Unofficial TypeScript integration for the [Tapin shipping API](https://docs.tapi
 ## Install
 
 ```sh
-npm install tapin
+npm install @hippogriffdev/tapin
 ```
 
 ```ts
-import { createTapinClient } from 'tapin/node';
+import { createTapinClient } from '@hippogriffdev/tapin/node';
 const tapin = createTapinClient({ token: process.env.TAPIN_TOKEN! });
 const shops = await tapin.shops.list({ count: 20, page: 1 });
 
@@ -41,17 +41,17 @@ const parcel = await tapin.orders.register({
 });
 ```
 
-Never expose a Tapin token in browser code. `tapin/browser` contains only public data and helpers; authenticated operations live in `tapin/node`. Mutating calls are never retried automatically: a timeout produces `TapinUnknownOutcomeError` and must be reconciled before retrying.
+Never expose a Tapin token in browser code. `@hippogriffdev/tapin/browser` contains only public data and helpers; authenticated operations live in `@hippogriffdev/tapin/node`. Mutating calls are never retried automatically: a timeout produces `TapinUnknownOutcomeError` and must be reconciled before retrying.
 
 ## Exports
 
-- `tapin` — provider-neutral contracts, endpoint inventory, errors and safety metadata
-- `tapin/browser` — immutable location snapshot and Persian search helpers
-- `tapin/node` — authenticated Axios client covering documented resource groups
-- `tapin/mongoose` — connection-scoped location models (no hidden connection)
-- `tapin/nestjs` — `TapinModule.forRoot` / `forRootAsync`; optional admin and public
+- `@hippogriffdev/tapin` — provider-neutral contracts, endpoint inventory, errors and safety metadata
+- `@hippogriffdev/tapin/browser` — immutable location snapshot and Persian search helpers
+- `@hippogriffdev/tapin/node` — authenticated Axios client covering documented resource groups
+- `@hippogriffdev/tapin/mongoose` — connection-scoped location models (no hidden connection)
+- `@hippogriffdev/tapin/nestjs` — `TapinModule.forRoot` / `forRootAsync`; optional admin and public
   controllers are disabled by default and require a host-provided authorizer and handlers
-- `tapin/testing` — deterministic fake transport and fixture helpers
+- `@hippogriffdev/tapin/testing` — deterministic fake transport and fixture helpers
 
 Document-producing order methods return bounded server-side streams rather than buffering entire PDFs or HTML responses:
 
@@ -64,7 +64,7 @@ The package classifies every endpoint as a read, mutation, financial/irreversibl
 
 `createTapinShippingService` provides normalized quote inputs with explicit IRR, grams, provider-code mapping, package-specific weight limits, and an injectable clock. Raw resource methods remain available so documented provider fields are never hidden. Tracking helpers preserve every raw status while separating delivery, workflow, and financial meanings.
 
-`tapin/mongoose` exports all schemas against a caller-supplied `Connection`; it never opens a connection. Credential tokens are represented as authenticated ciphertext and can use `createAesGcmCredentialVault` with host-managed 32-byte keys and key rotation. It also provides durable idempotency reservations, bounded outbox runners, sync-cursor leases, versioned location activation, and `loadLocations` with explicit bundled/Mongoose/live source selection.
+`@hippogriffdev/tapin/mongoose` exports all schemas against a caller-supplied `Connection`; it never opens a connection. Credential tokens are represented as authenticated ciphertext and can use `createAesGcmCredentialVault` with host-managed 32-byte keys and key rotation. It also provides durable idempotency reservations, bounded outbox runners, sync-cursor leases, versioned location activation, and `loadLocations` with explicit bundled/Mongoose/live source selection.
 
 Maintainers can run `npm run test:replica` to create a disposable local MongoDB replica set and verify real transactions, unique indexes, outbox lease fencing, and parcel status history. It requires local `mongod` and `mongosh` binaries and never connects to a production database.
 
@@ -80,7 +80,7 @@ The bundled location file is deliberately empty in source until a maintainer run
 
 ## Release
 
-1. Confirm the npm name with `npm view tapin` immediately before publishing.
+1. Confirm the npm name with `npm view @hippogriffdev/tapin` immediately before publishing.
 2. Generate and review the official location snapshot.
 3. Run `npm run check:package` and inspect `npm pack --dry-run`.
 4. Confirm commercial API authorization with Tapin.
