@@ -1,0 +1,166 @@
+{
+  "name": "tapin",
+  "version": "0.1.0",
+  "description": "Unofficial Tapin shipping API client and integration toolkit for TypeScript, Mongoose, and NestJS",
+  "keywords": [
+    "tapin",
+    "shipping",
+    "iran",
+    "postal",
+    "nestjs",
+    "mongoose",
+    "typescript"
+  ],
+  "homepage": "https://github.com/arna051/tapin#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arna051/tapin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/arna051/tapin/issues"
+  },
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "SECURITY.md",
+    "CONTRIBUTING.md",
+    "docs",
+    "examples"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./browser": {
+      "import": {
+        "types": "./dist/browser/index.d.ts",
+        "default": "./dist/browser/index.js"
+      },
+      "require": {
+        "types": "./dist/browser/index.d.cts",
+        "default": "./dist/browser/index.cjs"
+      }
+    },
+    "./node": {
+      "import": {
+        "types": "./dist/node/index.d.ts",
+        "default": "./dist/node/index.js"
+      },
+      "require": {
+        "types": "./dist/node/index.d.cts",
+        "default": "./dist/node/index.cjs"
+      }
+    },
+    "./mongoose": {
+      "import": {
+        "types": "./dist/mongoose/index.d.ts",
+        "default": "./dist/mongoose/index.js"
+      },
+      "require": {
+        "types": "./dist/mongoose/index.d.cts",
+        "default": "./dist/mongoose/index.cjs"
+      }
+    },
+    "./nestjs": {
+      "import": {
+        "types": "./dist/nestjs/index.d.ts",
+        "default": "./dist/nestjs/index.js"
+      },
+      "require": {
+        "types": "./dist/nestjs/index.d.cts",
+        "default": "./dist/nestjs/index.cjs"
+      }
+    },
+    "./testing": {
+      "import": {
+        "types": "./dist/testing/index.d.ts",
+        "default": "./dist/testing/index.js"
+      },
+      "require": {
+        "types": "./dist/testing/index.d.cts",
+        "default": "./dist/testing/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsup",
+    "clean": "rimraf dist coverage *.tgz",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:replica": "node scripts/run-replica-tests.mjs",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint .",
+    "format:check": "prettier --check .",
+    "secrets:scan": "node scripts/scan-secrets.mjs",
+    "locations:sync": "tsx scripts/sync-locations.ts",
+    "locations:verify": "tsx scripts/verify-locations.ts",
+    "browser:verify": "node scripts/verify-browser-bundle.mjs",
+    "consumer:verify": "node scripts/verify-consumer.mjs",
+    "example:verify": "tsc examples/node.ts --noEmit --target ES2022 --module NodeNext --moduleResolution NodeNext --strict --skipLibCheck",
+    "check:package": "npm run clean && npm run format:check && npm run secrets:scan && npm run typecheck && npm test && npm run test:replica && npm run lint && npm run locations:verify && npm run build && npm run browser:verify && npm run consumer:verify && npm run example:verify && publint && attw --pack --profile node16 && npm audit --omit=dev",
+    "prepack": "npm run build",
+    "prepublishOnly": "npm run check:package"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "zod": "^4.6.7"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^10.0.0 || ^11.0.0",
+    "mongoose": "^8.0.0",
+    "rxjs": "^7.8.0"
+  },
+  "peerDependenciesMeta": {
+    "@nestjs/common": {
+      "optional": true
+    },
+    "mongoose": {
+      "optional": true
+    },
+    "rxjs": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@eslint/js": "^9.17.0",
+    "@nestjs/common": "^11.0.0",
+    "@types/node": "^22.10.2",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.14.0",
+    "mongoose": "^8.9.2",
+    "prettier": "^3.4.2",
+    "publint": "^0.3.4",
+    "rimraf": "^6.0.1",
+    "rxjs": "^7.8.1",
+    "tsup": "^8.3.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.1",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=18.18"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [18, 20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm run secrets:scan
+      - run: npm run build
+      - run: npm run browser:verify
+      - run: npm run consumer:verify
+      - run: npm run example:verify
+      - if: matrix.node == 22
+        run: |
+          npx publint
+          npx attw --pack --profile node16
+          npm audit --omit=dev
+
+  package:
+    runs-on: ubuntu-latest
+    needs: verify
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+      - run: npm run locations:verify
+      - run: npm pack --dry-run
+
+  replica:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Start MongoDB replica set
+        run: |
+          docker run --detach --name tapin-mongo --publish 27018:27017 mongo:8 \
+            mongod --replSet tapin_ci_rs --bind_ip_all
+          until docker exec tapin-mongo mongosh --quiet --eval 'db.adminCommand({ping:1}).ok' >/dev/null 2>&1; do sleep 1; done
+          docker exec tapin-mongo mongosh --quiet --eval \
+            'rs.initiate({_id:"tapin_ci_rs",members:[{_id:0,host:"tapin-mongo:27017"}]})'
+          until docker exec tapin-mongo mongosh --quiet --eval 'db.hello().isWritablePrimary' | grep true; do sleep 1; done
+      - name: Run real replica-set tests
+        env:
+          TAPIN_TEST_MONGODB_URI: mongodb://127.0.0.1:27018/?directConnection=true
+        run: npx vitest run test/replica.test.ts

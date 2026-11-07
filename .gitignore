@@ -1,0 +1,8 @@
+node_modules/
+dist/
+coverage/
+*.tgz
+.env
+.env.*
+!.env.example
+src/browser/data/iran-locations.generated.json
